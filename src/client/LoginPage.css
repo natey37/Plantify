@@ -1,0 +1,90 @@
+.login-container {
+  height: 100vh;
+}
+
+.login-page {
+  /* background-color: #EAF0F1; */
+  border-top: 4px solid #5b86e5;
+  background-image: url(./images/PlantifyBackground.png);
+  background-size: cover;
+  background-position: center center;
+  color: #2c3e50;
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-modal {
+  background-color: #eaf0f1;
+  color: #2c3e50;
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 4px solid #5b86e5;
+  border-radius: 10px;
+  /* height: 60%; */
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 8px;
+  background-clip: text;
+  background: linear-gradient(to right, #6f00ff, #0077c2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.signup-link {
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.signup-link a {
+  color: #5b86e5;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+input[type="submit"] {
+  background-color: #3f51b5;
+  color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+input[type="submit"]:hover {
+  background-color: #303f9f;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  width: 100%;
+}
+
+input[type="password"] {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  width: 100%;
+}
