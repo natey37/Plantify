@@ -38,7 +38,6 @@ const MainPage = ({ user }) => {
     <div className="container">
       <Nav user={user} />
       <main>
-        <Gpt3Example />
         <h1 className="title">
           Welcome to <span className="plantify">Plantify</span>{" "}
           {`${user.username}`}
@@ -69,6 +68,7 @@ const MainPage = ({ user }) => {
             </div>
           </a>
         </div>
+        <Gpt3Example user={user}/>
         <section id="plants">
           <div className="section-row plant-background">
             <h2 className="section-title">Plants</h2>

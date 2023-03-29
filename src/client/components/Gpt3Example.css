@@ -1,0 +1,22 @@
+.generated-plant {
+    border: 1px solid #5b86e5;
+    background-color: #36d1dc;
+    padding: 20px;
+    margin: 40px 0;
+  }
+  
+  .generated-plant h2 {
+    margin-top: 0;
+  }
+  
+  .generated-plant p {
+    margin: 10px 0;
+    color: #fff;
+  }
+  
+  .generated-plant img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto
+  }

@@ -196,7 +196,7 @@ const WateringTask = ({
 
   return (
     <div className="watering-task">
-      <h2>{plant && plant.name}</h2>
+      <h2>{plant && plant.commonName}</h2>
       <p>{wateringTask.dueDate}</p>
       <p>Completed: {wateringTask.completed ? "Yes" : "No"}</p>
       <div className="button-row">
@@ -271,19 +271,19 @@ const NewWateringTaskForm = ({
 
   return (
     <form className="new-watering-task-form" onSubmit={handleSubmit}>
-      <label htmlFor="plantName">Plant:</label>
+      <label htmlFor="commonName">Plant:</label>
       <select
-        name="plantName"
-        value={selectedPlant ? selectedPlant.name : ""}
+        name="commonName"
+        value={selectedPlant ? selectedPlant.commonName : ""}
         onChange={(e) =>
           setSelectedPlant(
-            plants.find((plant) => plant.name === e.target.value)
+            plants.find((plant) => plant.commonName === e.target.value)
           )
         }
       >
         {plants.map((plant, idx) => (
-          <option key={idx} value={plant.name}>
-            {plant.name}
+          <option key={idx} value={plant.commonName}>
+            {plant.commonName}
           </option>
         ))}
       </select>

@@ -20,6 +20,8 @@ const Notes = (props) => {
     error: plantsError,
   } = useQuery(getPlants);
 
+  console.log("I AM PLANTS IN NOTES: ", plants)
+
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingNoteId, setUpdatingNoteId] = useState(null);
   const [noteContent, setNoteContent] = useState("");
@@ -93,7 +95,7 @@ const Note = ({
 
   return (
     <div className="note">
-      <h2>{plant && plant.name}</h2>
+      <h2>{plant && plant.commonName}</h2>
       <p>{note.content}</p>
       <div className="button-row">
         <button className="delete-btn" onClick={handleDelete}>
@@ -192,7 +194,7 @@ const NewNoteForm = (props) => {
       >
         {plants.map((plant, idx) => (
           <option key={idx} value={plant.id}>
-            {plant.name}
+            {plant.commonName}
           </option>
         ))}
       </select>

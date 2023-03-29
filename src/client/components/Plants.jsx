@@ -182,6 +182,23 @@ import updatePlant from "@wasp/actions/updatePlant";
 import deletePlant from "@wasp/actions/deletePlant";
 import "./Plants.css";
 
+const intialPlantState = {
+    species: "",
+    commonName: "",
+    lightRequirements: "",
+    waterRequirements: "",
+    wateringSchedule: "",
+    soilRequirements: "",
+    fertilizerRequirements: "",
+    propagation: "",
+    pestsAndDiseases: "",
+    toxicity: "",
+    other: "",
+    note: "",
+    funInterestingFact: "",
+    imageUrl: "",
+}
+
 const Plants = () => {
   const {
     data: plants,
@@ -197,26 +214,50 @@ const Plants = () => {
   const isFetching = isFetchingPlants || isFetchingCategories;
   const error = plantsError || categoriesError;
 
+//   const headers = [
+//     "Species",
+//     "Common Name",
+//     "Light Requirements",
+//     "Water Requirements",
+//     "Watering Schedule",
+//     "Soil Requirements",
+//     "Fertilizer Requirements",
+//     "Propagation",
+//     "Pests and Diseases",
+//     "Toxicity",
+//     "Other",
+//     "Notes",
+//     "Fun Interesting Fact",
+//     "Free Image", 
+//   ];
+
+
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingPlantId, setUpdatingPlantId] = useState(null);
-  const [plantName, setPlantName] = useState("");
-  const [plantImageUrl, setPlantImageUrl] = useState("");
-  const [plantWateringFrequency, setPlantWateringFrequency] = useState("");
+  const [plantState, setPlantState] = useState(intialPlantState);
+
+
+//   const [plantName, setPlantName] = useState("");
+//   const [plantImageUrl, setPlantImageUrl] = useState("");
+//   const [plantWateringFrequency, setPlantWateringFrequency] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   return (
     <div className="plants-container">
       {categories && (
         <NewPlantForm
+          
+          plantState={plantState}
+          setPlantState={setPlantState}
           categories={categories}
           isUpdating={isUpdating}
           setIsUpdating={setIsUpdating}
-          plantName={plantName}
-          setPlantName={setPlantName}
-          plantImageUrl={plantImageUrl}
-          setPlantImageUrl={setPlantImageUrl}
-          plantWateringFrequency={plantWateringFrequency}
-          setPlantWateringFrequency={setPlantWateringFrequency}
+        //   plantName={plantName}
+        //   setPlantName={setPlantName}
+        //   plantImageUrl={plantImageUrl}
+        //   setPlantImageUrl={setPlantImageUrl}
+        //   plantWateringFrequency={plantWateringFrequency}
+        //   setPlantWateringFrequency={setPlantWateringFrequency}
           selectedCategoryId={selectedCategoryId}
           setSelectedCategoryId={setSelectedCategoryId}
           updatingPlantId={updatingPlantId}
@@ -225,13 +266,15 @@ const Plants = () => {
       )}
       {plants && (
         <PlantsList
+        //   plantState={plantState}
+          setPlantState={setPlantState}
           plants={plants}
           categories={categories}
           setIsUpdating={setIsUpdating}
           setUpdatingPlantId={setUpdatingPlantId}
-          setPlantName={setPlantName}
-          setPlantImageUrl={setPlantImageUrl}
-          setPlantWateringFrequency={setPlantWateringFrequency}
+        //   setPlantName={setPlantName}
+        //   setPlantImageUrl={setPlantImageUrl}
+        //   setPlantWateringFrequency={setPlantWateringFrequency}
           setSelectedCategoryId={setSelectedCategoryId}
         />
       )}
@@ -242,38 +285,65 @@ const Plants = () => {
   );
 };
 
-const Plant = (props) => {
+const Plant = ({ setPlantState, categories, plant, setIsUpdating, setUpdatingPlantId, setSelectedCategoryId}) => {
   let category;
-
-  if (props.categories) {
-    category = props.categories.find(
-      (category) => category.id === props.plant.categoryId
+  if (categories) {
+    category = categories.find(
+      (category) => category.id === plant.categoryId
     );
   }
 
   const handleDelete = async () => {
     try {
-      await deletePlant({ id: props.plant.id });
+      await deletePlant({ id: plant.id });
     } catch (err) {
       window.alert("Error: " + err.message);
     }
   };
 
   const handleUpdate = () => {
-    props.setIsUpdating(true);
-    props.setUpdatingPlantId(props.plant.id);
-    props.setPlantName(props.plant.name);
-    props.setPlantImageUrl(props.plant.imageUrl);
-    props.setPlantWateringFrequency(props.plant.wateringFrequency);
-    props.setSelectedCategoryId(props.plant.categoryId);
+    setIsUpdating(true);
+    setUpdatingPlantId(plant.id);
+    setSelectedCategoryId(plant.categoryId);
+    setPlantState({
+        species: plant.species,
+        commonName: plant.commonName,
+        lightRequirements: plant.lightRequirements,
+        waterRequirements: plant.waterRequirements,
+        wateringSchedule: plant.wateringSchedule,
+        soilRequirements: plant.soilRequirements,
+        fertilizerRequirements: plant.fertilizerRequirements,
+        propagation: plant.propagation,
+        pestsAndDiseases: plant.pestsAndDiseases,
+        toxicity: plant.toxicity,
+        other: plant.other,
+        note: plant.note,
+        funInterestingFact: plant.funInterestingFact,
+        imageUrl: plant.imageUrl,
+    });
+
   };
 
   return (
     <div className="plant-card">
-      <h2>{props.plant.name}</h2>
+        
+      <h2>{plant.commonName}</h2>
+        <p><span className="bold-text">Species: </span>{plant.species}</p>
+        <p><span className="bold-text">Light Requirements: </span>{plant.lightRequirements}</p>
+        <p><span className="bold-text">Water Requirements: </span>{plant.waterRequirements}</p>
+        <p><span className="bold-text">Watering Schedule: </span>{plant.wateringSchedule}</p>
+        <p><span className="bold-text">Soil Requirements: </span>{plant.soilRequirements}</p>
+        <p><span className="bold-text">Fertilizer Requirements: </span>{plant.fertilizerRequirements}</p>
+        <p><span className="bold-text">Propagation: </span>{plant.propagation}</p>
+        <p><span className="bold-text">Pests and Diseases: </span>{plant.pestsAndDiseases}</p>
+        <p><span className="bold-text">Toxicity: </span>{plant.toxicity}</p>
+        <p><span className="bold-text">Other: </span>{plant.other}</p>
+        <p><span className="bold-text">Notes: </span>{plant.note}</p>
+        <p><span className="bold-text">Fun Interesting Fact: </span>{plant.funInterestingFact}</p>
+        <img src={plant.imageUrl}/>
       <p>{category && category.name}</p>
-      <p>Watering Frequency: {props.plant.wateringFrequency}</p>
-      <img src={props.plant.imageUrl} alt={props.plant.name} />
+      {/* <p>Watering Frequency: {props.plant.wateringFrequency}</p>
+       <img src={props.plant.imageUrl} alt={props.plant.name} />  */}
       <div className="button-row">
         <button className="delete-btn" onClick={handleDelete}>
           Delete
@@ -286,69 +356,92 @@ const Plant = (props) => {
   );
 };
 
-const PlantsList = (props) => {
-  if (!props.plants?.length) return "No plants";
+const PlantsList = ({ setPlantState, plants, categories, setIsUpdating, setUpdatingPlantId, setSelectedCategoryId}) => {
+  if (!plants?.length) return "No plants";
   return (
     <div className="plants-list">
-      {props.plants.map((plant, idx) => (
+      {plants.map((plant, idx) => (
         <Plant
-          categories={props.categories}
+        setPlantState={setPlantState}
+        //   plantState={plantState}
+          categories={categories}
           plant={plant}
           key={idx}
-          setIsUpdating={props.setIsUpdating}
-          setUpdatingPlantId={props.setUpdatingPlantId}
-          setPlantName={props.setPlantName}
-          setPlantImageUrl={props.setPlantImageUrl}
-          setPlantWateringFrequency={props.setPlantWateringFrequency}
-          setSelectedCategoryId={props.setSelectedCategoryId}
+          setIsUpdating={setIsUpdating}
+          setUpdatingPlantId={setUpdatingPlantId}
+          setSelectedCategoryId={setSelectedCategoryId}
         />
       ))}
     </div>
   );
 };
 
-const NewPlantForm = (props) => {
-  const {
+const NewPlantForm = ({  plantState,
+    setPlantState,
     categories,
     isUpdating,
     setIsUpdating,
-    plantName,
     setPlantName,
-    plantImageUrl,
     setPlantImageUrl,
-    plantWateringFrequency,
     setPlantWateringFrequency,
     selectedCategoryId,
     setSelectedCategoryId,
     updatingPlantId,
-    setUpdatingPlantId,
-  } = props;
+    setUpdatingPlantId,}) => {
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const name = event.target.name.value;
-      const imageUrl = event.target.imageUrl.value;
-      const wateringFrequency = event.target.wateringFrequency.value;
-      const categoryId = parseInt(event.target.categoryId.value);
+    //   const name = event.target.name.value;
+    //   const imageUrl = event.target.imageUrl.value;
+    //   const wateringFrequency = event.target.wateringFrequency.value;
+        const species = event.target.species.value;
+        const commonName = event.target.commonName.value;
+        const lightRequirements = event.target.lightRequirements.value;
+        const waterRequirements = event.target.waterRequirements.value;
+        const wateringSchedule = event.target.wateringSchedule.value;
+        const soilRequirements = event.target.soilRequirements.value;
+        const fertilizerRequirements = event.target.fertilizerRequirements.value;
+        const propagation = event.target.propagation.value;
+        const pestsAndDiseases = event.target.pestsAndDiseases.value;
+        const toxicity = event.target.toxicity.value;
+        const other = event.target.other.value;
+        const note = event.target.note.value;
+        const funInterestingFact = event.target.funInterestingFact.value;
+        const imageUrl = event.target.imageUrl.value;
+        const categoryId = parseInt(event.target.categoryId.value);
+
 
       if (isUpdating) {
         await updatePlant({
           id: updatingPlantId,
-          name,
-          imageUrl,
-          wateringFrequency,
+          species,
+          commonName,
+            lightRequirements,
+            waterRequirements,
+            wateringSchedule,
+            soilRequirements,
+            fertilizerRequirements,
+            propagation,
+            pestsAndDiseases,
+            toxicity,
+            other,
+            note,
+            funInterestingFact,
+            imageUrl,
           categoryId,
         });
         setIsUpdating(false);
         setUpdatingPlantId(null);
       } else {
-        await createPlant({ name, imageUrl, wateringFrequency, categoryId });
+        await createPlant({ species, commonName, lightRequirements, waterRequirements, wateringSchedule, soilRequirements, fertilizerRequirements, propagation, pestsAndDiseases, toxicity, other, note, funInterestingFact, imageUrl, categoryId });
       }
       event.target.reset();
-      setPlantName("");
-      setPlantImageUrl("");
-      setPlantWateringFrequency("");
+      setPlantState(intialPlantState)
+    //   setPlantName("");
+    //   setPlantImageUrl("");
+    //   setPlantWateringFrequency("");
       setSelectedCategoryId(null);
     } catch (err) {
       window.alert("Error: " + err.message);
@@ -361,9 +454,124 @@ const NewPlantForm = (props) => {
     }
   }, [isUpdating, selectedCategoryId, setSelectedCategoryId]);
 
+
   return (
     <form className="new-plant-form" onSubmit={handleSubmit}>
-      <label htmlFor="name">Name:</label>
+        <label htmlFor="species">Species</label>
+        <input
+            name="species"
+            type="text"
+            defaultValue={plantState.species}
+            placeholder="Species"
+            onChange={(e) => setPlantState({ ...plantState, species: e.target.value })}
+        />
+        <label htmlFor="commonName">Common Name</label>
+        <input
+            name="commonName"
+            type="text"
+            defaultValue={plantState.commonName}
+            placeholder="Common Name"
+            onChange={(e) => setPlantState({ ...plantState, commonName: e.target.value })}
+        />
+        <label htmlFor="lightRequirements">Light Requirements</label>
+        <input
+            name="lightRequirements"
+            type="text"
+            defaultValue={plantState.lightRequirements}
+            placeholder="Light Requirements"
+            onChange={(e) => setPlantState({ ...plantState, lightRequirements: e.target.value })}
+        />
+        <label htmlFor="wateringRequirements">Watering Requirements</label>
+        <input
+            name="waterRequirements"
+            type="text"
+            defaultValue={plantState.waterRequirements}
+            placeholder="Water Requirements"
+            onChange={(e) => setPlantState({ ...plantState, waterRequirements: e.target.value })}
+        />
+        <label htmlFor="wateringSchedule">Watering Schedule</label>
+        <input
+            name="wateringSchedule"
+            type="text"
+            defaultValue={plantState.wateringSchedule}
+            placeholder="Watering Schedule"
+            onChange={(e) => setPlantState({ ...plantState, wateringSchedule: e.target.value })}
+        />
+        <label htmlFor="soilRequirements">Soil Requirements</label>
+        <input
+
+            name="soilRequirements"
+            type="text"
+            defaultValue={plantState.soilRequirements}
+            placeholder="Soil Requirements"
+            onChange={(e) => setPlantState({ ...plantState, soilRequirements: e.target.value })}
+        />
+        <label htmlFor="fertilizerRequirements">Fertilizer Requirements</label>
+        <input
+            name="fertilizerRequirements"
+            type="text"
+            defaultValue={plantState.fertilizerRequirements}
+            placeholder="Fertilizer Requirements"
+            onChange={(e) => setPlantState({ ...plantState, fertilizerRequirements: e.target.value })}
+        />
+        <label htmlFor="propagation">Propagation</label>
+        <input
+            name="propagation"
+            type="text"
+            defaultValue={plantState.propagation}
+            placeholder="Propagation"
+            onChange={(e) => setPlantState({ ...plantState, propagation: e.target.value })}
+        />
+        <label htmlFor="pestsAndDiseases">Pests and Diseases</label>
+        <input
+            name="pestsAndDiseases"
+            type="text"
+            defaultValue={plantState.pestsAndDiseases}
+            placeholder="Pests and Diseases"
+            onChange={(e) => setPlantState({ ...plantState, pestsAndDiseases: e.target.value })}
+        />
+        <label htmlFor="toxicity">Toxicity</label>
+        <input
+            name="toxicity"
+            type="text"
+            defaultValue={plantState.toxicity}
+            placeholder="Toxicity"
+            onChange={(e) => setPlantState({ ...plantState, toxicity: e.target.value })}
+        />
+        <label htmlFor="other">Other</label>
+        <input
+
+            name="other"
+            type="text"
+            defaultValue={plantState.other}
+            placeholder="Other"
+            onChange={(e) => setPlantState({ ...plantState, other: e.target.value })}
+        />
+        <label htmlFor="note">Note</label>
+        <input
+            name="note"
+            type="text"
+            defaultValue={plantState.note}
+            placeholder="Note"
+            onChange={(e) => setPlantState({ ...plantState, note: e.target.value })}
+        />
+        <label htmlFor="funInterestingFact">Fun Interesting Fact</label>
+        <input
+            name="funInterestingFact"
+            type="text"
+            defaultValue={plantState.funInterestingFact}
+            placeholder="Fun Interesting Fact"
+            onChange={(e) => setPlantState({ ...plantState, funInterestingFact: e.target.value })}
+        />
+        <label htmlFor="imageUrl">Image URL</label>
+        <input
+            name="imageUrl"
+            type="text"
+            defaultValue={plantState.imageUrl}
+            placeholder="Image URL"
+            onChange={(e) => setPlantState({ ...plantState, imageUrl: e.target.value })}
+        />
+      {/* <label htmlFor="name">Name:</label>
       <input
         name="name"
         type="text"
@@ -386,7 +594,7 @@ const NewPlantForm = (props) => {
         defaultValue={plantWateringFrequency}
         placeholder="Watering frequency"
         onChange={(e) => setPlantWateringFrequency(e.target.value)}
-      />
+      /> */}
       <label htmlFor="categoryId">Category:</label>
       <select
         name="categoryId"
@@ -410,9 +618,7 @@ const NewPlantForm = (props) => {
           type="button"
           onClick={() => {
             setIsUpdating(false);
-            setPlantName("");
-            setPlantImageUrl("");
-            setPlantWateringFrequency("");
+            setPlantState(intialPlantState);
             setSelectedCategoryId(null);
           }}
         >

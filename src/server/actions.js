@@ -1,8 +1,22 @@
 //Plants
 
 export const createPlant = async (args, context) => {
-  const { name, categoryId, imageUrl, wateringFrequency } = args;
-
+  const {  species,
+  commonName,
+  lightRequirements,
+  waterRequirements,
+  wateringSchedule,
+  soilRequirements,
+  fertilizerRequirements,
+  propagation,
+  pestsAndDiseases,
+  toxicity,
+  other,
+  note,
+  funInterestingFact,
+  imageUrl,
+  categoryId
+  } = args;
   console.log("ARGS", args);
 
   if (!context.user) {
@@ -11,10 +25,21 @@ export const createPlant = async (args, context) => {
 
   return context.entities.Plant.create({
     data: {
-      name,
+      species,
+        commonName,
+        lightRequirements,
+        waterRequirements,
+        wateringSchedule,
+        soilRequirements,
+        fertilizerRequirements,
+        propagation,
+        pestsAndDiseases,
+        toxicity,
+        other,
+        note,
+        funInterestingFact,
+        imageUrl,
       categoryId: categoryId,
-      imageUrl,
-      wateringFrequency,
       userId: context.user.id,
     },
   });
@@ -100,11 +125,8 @@ const updateEntity = (entityName, updateData) => {
 
 export const updatePlant = updateEntity(
   "Plant",
-  ({ name, categoryId, imageUrl, wateringFrequency }) => ({
-    name,
-    categoryId,
-    imageUrl,
-    wateringFrequency,
+  ({ species, commonName, lightRequirements, waterRequirements, wateringSchedule, soilRequirements, fertilizerRequirements, propagation, pestsAndDiseases, toxicity, other, note, funInterestingFact, imageUrl, categoryId  }) => ({
+    species, commonName, lightRequirements, waterRequirements, wateringSchedule, soilRequirements, fertilizerRequirements, propagation, pestsAndDiseases, toxicity, other, note, funInterestingFact, imageUrl, categoryId ,
   })
 );
 
@@ -155,87 +177,22 @@ export const deleteNote = deleteEntity("Note");
 export const deleteWateringTask = deleteEntity("WateringTask");
 
 
-//GPT-3
-
-// import openai from 'openai';
-// import { createAsyncAction } from '@wasp/actions';
-
-// openai.apiKey = process.env.OPENAI_API_KEY;
-
-// export const generateText = async (prompt) => {
-//   try {
-//     const response = await openai.Completion.create({
-//       engine: 'davinci-codex',
-//       prompt: prompt,
-//       max_tokens: 100,
-//       n: 1,
-//       stop: null,
-//       temperature: 1,
-//     });
-
-//     return response.choices[0].text.trim();
-//   } catch (error) {
-//     throw new Error('Error generating text: ' + error.message);
-//   }
-// };
-
-// export default createAsyncAction('generateGpt3Text', async (prompt) => {
-//   const response = await generateText(prompt);
-//   return response;
-// });
-
-
-
-
-// const openaiApiKey = config.REACT_APP_OPENAI_API_KEY;
-
-// async function sendRequest(prompt, tokens) {
-//   try {
-//     const response = await fetch(
-//       'https://api.openai.com/v1/engines/davinci-codex/completions',
-//       {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${openaiApiKey}`,
-//         },
-//         body: JSON.stringify({
-//           prompt,
-//           max_tokens: tokens,
-//           n: 1,
-//           temperature: 0.7,
-//         }),
-//       }
-//     );
-
-//     const data = await response.json();
-
-//     if (!response.ok) {
-//       throw new Error(`Error: ${data.message}`);
-//     }
-
-//     return data.choices[0].text;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
-// export default createAsyncAction('generateGpt3Text', async (prompt) => {
-//   const response = await sendRequest(prompt, 100);
-//   return response;
-// });
-
-
+//GPT-3 and DALLE
 const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
-export const generatePlantGpt3 = async (req, res) => {
+
+export const generatePlantGpt3 = async ({ prompt }) => {
+    // console.log("API KEY", openaiApiKey)
+    // console.log("PROMPT", prompt)
+    // console.log(prompt.prompt)
+
+    const newPrompt = `Please fill out this template for ${prompt}. Please keep everything as succinct as possible. [Species]. [Common Name]. [Light Requirements]. [Water Requirements]. [Watering Schedule]. [Soil Requirements]. [Fertilizer Requirements]. [Propagation]. [Pests and Diseases]. [Toxicity]. [Other]. [Notes]. [Fun Interesting Fact]. }]`
   try {
-    const prompt = req.body.prompt;
-    const tokens = req.body.tokens;
+    // const prompt = req.body.prompt;
+    // const tokens = req.body.tokens;
 
     const response = await fetch(
-      'https://api.openai.com/v1/engines/davinci-codex/completions',
+      'https://api.openai.com/v1/engines/text-davinci-003/completions',
       {
         method: 'POST',
         headers: {
@@ -243,8 +200,8 @@ export const generatePlantGpt3 = async (req, res) => {
           Authorization: `Bearer ${openaiApiKey}`,
         },
         body: JSON.stringify({
-          prompt,
-          max_tokens: tokens,
+          prompt: newPrompt,
+          max_tokens: 300,
           n: 1,
           temperature: 0.7,
         }),
@@ -252,16 +209,111 @@ export const generatePlantGpt3 = async (req, res) => {
     );
 
     const data = await response.json();
+    console.log(data)
 
-    if (!response.ok) {
-      throw new Error(`Error: ${data.message}`);
-    }
-
-    res.status(200).json({ text: data.choices[0].text });
+    return data.choices[0].text;
+    // res.status(200).json({ text: data.choices[0].text });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
   }
 };
 
+export const generateImageDalle = async ({ prompt, user }) => {
+    try {
+      const newPrompt = `3D rendered icon of ${prompt}.`;
+        console.log("PROMPT", newPrompt)
+      const response = await fetch(
+        'https://api.openai.com/v1/images/generations', // Hypothetical DALL-E API endpoint
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${openaiApiKey}`,
+          },
+          body: JSON.stringify({
+            
+                "prompt": newPrompt,
+                "size": "512x512",
+                "n": 1,
+                "response_format": "url"
+              
+              
+          }),
+        }
+      );
+  
+      const data = await response.json();
+      console.log("DATA", data);
+      const s3Url = saveImageToBucket(data.data[0].url, "plantify-images", `${user.username}/${prompt}.png`)
+      return s3Url // Assuming the API returns the image URL
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
+
+
+  import AWS from 'aws-sdk';
+  import fetch from 'node-fetch';
+  
+  // Configure AWS SDK
+  AWS.config.update({
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+    region: process.env.REACT_APP_AWS_REGION,
+  });
+  
+  // Create an S3 instance
+  const s3 = new AWS.S3();
+  
+  async function saveImageToS3(url, bucketName, key) {
+    try {
+      // Fetch the image from the URL
+      const response = await fetch(url);
+      const buffer = await response.buffer();
+  
+      // Upload the image to S3
+      const uploadParams = {
+        Bucket: bucketName,
+        Key: key,
+        Body: buffer,
+        ContentType: response.headers.get('content-type'),
+        // ACL: 'public-read', // Set to 'public-read' to make the file publicly accessible
+      };
+  
+     
+      const uploadResult = await s3.upload(uploadParams).promise();
+      console.log('Image uploaded to S3:', uploadResult)
+      // Return the URL of the uploaded image in S3
+      return uploadResult.Location;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
+
+  const saveImageToBucket = async (url, bucketName, key) => {
+    try {
+            const savedImageUrl = await saveImageToS3(url, bucketName, key);
+            console.log('Image saved to S3:', savedImageUrl);
+            return savedImageUrl
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+  
+//   (async () => {
+//     const imageUrl = 'URL_OF_THE_IMAGE_FROM_DALLE'; // Replace with the actual URL
+//     const bucketName = 'your-s3-bucket-name'; // Replace with your S3 bucket name
+//     const key = 'path/to/save/image.jpg'; // Replace with the desired path and filename in your S3 bucket
+  
+//     try {
+//       const savedImageUrl = await saveImageToS3(imageUrl, bucketName, key);
+//       console.log('Image saved to S3:', savedImageUrl);
+//     } catch (error) {
+//       console.error('Error:', error);
+//     }
+//   })();
+    
