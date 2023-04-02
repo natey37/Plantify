@@ -81,7 +81,7 @@ export const createWateringTask = async (args, context) => {
   console.log("ARGS", args);
   // const dateString = '2023-04-01';
   const dateObject = new Date(dueDate);
-
+    console.log("DATE", dateObject)
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -186,7 +186,9 @@ export const generatePlantGpt3 = async ({ prompt }) => {
     // console.log("PROMPT", prompt)
     // console.log(prompt.prompt)
 
-    const newPrompt = `Please fill out this template for ${prompt}. Please keep everything as succinct as possible. [Species]. [Common Name]. [Light Requirements]. [Water Requirements]. [Watering Schedule]. [Soil Requirements]. [Fertilizer Requirements]. [Propagation]. [Pests and Diseases]. [Toxicity]. [Other]. [Notes]. [Fun Interesting Fact]. }]`
+    const newPrompt = `Please fill out this template for ${prompt}. Please keep everything as succinct as possible. [Species]. [Common Name]. [Light Requirements]. [Water Requirements]. [Watering Schedule - give answer as Daily, Weekly, Bi-Weekly, Monthly]. [Soil Requirements]. [Fertilizer Requirements]. [Propagation]. [Pests and Diseases]. [Toxicity]. [Other]. [Notes]. [Fun Interesting Fact]. [Category].`
+
+    console.log("NEW PROMPT", newPrompt)
   try {
     // const prompt = req.body.prompt;
     // const tokens = req.body.tokens;
@@ -209,7 +211,7 @@ export const generatePlantGpt3 = async ({ prompt }) => {
     );
 
     const data = await response.json();
-    console.log(data)
+    console.log("Data IN GENERATE PLANT WTF", data)
 
     return data.choices[0].text;
     // res.status(200).json({ text: data.choices[0].text });
@@ -221,8 +223,20 @@ export const generatePlantGpt3 = async ({ prompt }) => {
 
 export const generateImageDalle = async ({ prompt, user }) => {
     try {
-      const newPrompt = `3D rendered icon of ${prompt}.`;
-        console.log("PROMPT", newPrompt)
+    //   const newPrompt = `3D rendered icon of ${prompt}.`;
+    const newPrompt = `PROMPT: Create an artistic, semi-realistic image of a ${prompt} The image should have a natural and organic feel to it, and should be suitable for use in a garden or nature-themed project. Please ensure that the image is high-resolution and visually appealing.
+
+    PARAMETERS:
+    - Image size: 512x512 pixels
+    - Number of objects: 1-5
+    - Style: Realistic with artistic flair
+    - Camera angle: Top-down or front-facing
+    - Lighting: Natural, with soft shadows
+    - Background: Neutral or natural, with some texture
+    - Color palette: Natural greens and earthy tones, with pops of color
+    - Additional notes: Please avoid adding any artificial or overly stylized elements to the image, and strive for a balance between realism and artistic expression. The image should be suitable for use in print or digital media.
+    `
+        // console.log("PROMPT", newPrompt)
       const response = await fetch(
         'https://api.openai.com/v1/images/generations', // Hypothetical DALL-E API endpoint
         {
@@ -244,7 +258,7 @@ export const generateImageDalle = async ({ prompt, user }) => {
       );
   
       const data = await response.json();
-      console.log("DATA", data);
+    //   console.log("DATA", data);
       const s3Url = saveImageToBucket(data.data[0].url, "plantify-images", `${user.username}/${prompt}.png`)
       return s3Url // Assuming the API returns the image URL
     } catch (error) {

@@ -1,24 +1,20 @@
-.button-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
 
 .categories {
   background-color: #eaf0f1;
   color: #2c3e50;
   font-family: "Arial", sans-serif;
   padding: 20px;
+  border: 2px solid #5b86e5;
+
 }
 
 .category {
-  background-color: #ffffff;
+  background-color: #E5FCFF;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   padding: 20px;
+  
 }
 
 .category-container {
@@ -27,7 +23,7 @@
   grid-gap: 20px;
 }
 
-.new-category-form {
+/* .new-category-form {
   display: grid;
   grid-gap: 10px;
   max-width: 500px;
@@ -38,9 +34,9 @@
 .new-category-form select {
   padding: 10px;
   width: 100%;
-}
+} */
 
-.submit-btn {
+/* .submit-btn {
   background-color: #5b86e5;
   border: none;
   border-radius: 5px;
@@ -57,9 +53,9 @@
 
 .submit-btn:focus {
   outline: none;
-}
+} */
 
-.delete-btn {
+/* .delete-btn {
   background-color: #e74c3c;
   border: none;
   border-radius: 5px;
@@ -95,4 +91,4 @@
 
 .update-btn:focus {
   outline: none;
-}
+} */

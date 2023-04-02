@@ -193,21 +193,46 @@ const WateringTask = ({
       window.alert("Error: " + err.message);
     }
   };
-
+ 
+  const date = new Date(wateringTask.dueDate);
+  
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  const day = date.getDate();
+  const monthName = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  
+  const ordinal = (day) => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+  
+  const formattedDate = `${monthName} ${day}${ordinal(day)}, ${year}`;
+  
+  console.log(formattedDate); // Output: April 6th, 2023
+  
   return (
     <div className="watering-task">
       <h2>{plant && plant.commonName}</h2>
-      <p>{wateringTask.dueDate}</p>
+      <p>{formattedDate}</p>
       <p>Completed: {wateringTask.completed ? "Yes" : "No"}</p>
       <div className="button-row">
-        <button className="delete-btn" onClick={handleDelete}>
+        <button className="delete-btn responsive-button" onClick={handleDelete}>
           Delete
         </button>
-        <button className="update-btn" onClick={handleUpdate}>
+        <button className="update-btn responsive-button" onClick={handleUpdate}>
           Update
         </button>
-        <button className="complete-btn" onClick={handleToggleCompleted}>
-          {wateringTask.completed ? "Mark Incomplete" : "Mark Complete"}
+        <button className="complete-btn responsive-button" onClick={handleToggleCompleted}>
+          {wateringTask.completed ? "Incomplete" : "Completed"}
         </button>
       </div>
     </div>
@@ -222,7 +247,7 @@ const WateringTasksList = ({
   setDueDate,
   setSelectedPlant,
 }) => {
-  if (!wateringTasks?.length) return "No Watering Tasks";
+  if (!wateringTasks?.length) return  <p>No watering tasks</p>;
   return wateringTasks.map((wateringTask, idx) => (
     <WateringTask
       wateringTask={wateringTask}
@@ -269,36 +294,57 @@ const NewWateringTaskForm = ({
     }
   };
 
+  const [openCreateWateringTask, setOpenCreateWateringTask] = useState(false);
+
+
   return (
-    <form className="new-watering-task-form" onSubmit={handleSubmit}>
-      <label htmlFor="commonName">Plant:</label>
-      <select
-        name="commonName"
-        value={selectedPlant ? selectedPlant.commonName : ""}
-        onChange={(e) =>
-          setSelectedPlant(
-            plants.find((plant) => plant.commonName === e.target.value)
-          )
-        }
-      >
-        {plants.map((plant, idx) => (
-          <option key={idx} value={plant.commonName}>
-            {plant.commonName}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="dueDate">Due Date:</label>
-      <input
-        name="dueDate"
-        type="date"
-        value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
-      />
-      <input
-        className="submit-btn"
-        type="submit"
-        value={isUpdating ? "Update Watering Task" : "Create Watering Task"}
-      />
+    <form className="new-plant-form" onSubmit={handleSubmit}>
+        <h3 className="close-btn" onClick={() => setOpenCreateWateringTask(prev => !prev)}>{openCreateWateringTask ? "x" : "Create a Watering Task +"}</h3>
+        {openCreateWateringTask && (
+            <>
+             <div className="form-section">
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label htmlFor="commonName">Plant:</label>
+                            <select
+                                name="commonName"
+                                value={selectedPlant ? selectedPlant.commonName : ""}
+                                onChange={(e) =>
+                                setSelectedPlant(
+                                    plants.find((plant) => plant.commonName === e.target.value)
+                                )
+                                }
+                            >
+                                {plants.map((plant, idx) => (
+                                <option key={idx} value={plant.commonName}>
+                                    {plant.commonName}
+                                </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="dueDate">Due Date:</label>
+                            <input
+                                name="dueDate"
+                                type="date"
+                                value={dueDate}
+                                onChange={(e) => setDueDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="form-actions">
+                    <button
+                        className="submit-btn"
+                        type="submit"
+                        
+                    >
+                        {isUpdating ? "Update Watering Task" : "Create Watering Task"}
+                    </button>
+                </div>
+            </>
+        )}
+       
     </form>
   );
 };

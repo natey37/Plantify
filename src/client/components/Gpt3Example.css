@@ -20,3 +20,44 @@
     display: block;
     margin: auto
   }
+
+  .plants-container {
+    background-color: #ABDAFC;
+
+  }
+.gpt-container {
+    background-color: #ABDAFC;
+    color: #2c3e50;
+    font-family: "Arial", sans-serif;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 2px solid #5b86e5;
+}
+
+.gpt-form {
+    display: grid;
+    grid-gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #E5FCFF;
+    border-radius: 5px;
+  }
+  
+  .gpt-form input,
+  .gpt-form select {
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .gpt-header {
+    margin-top: -20px;
+    margin-bottom: -20px;
+
+  }
+  
+  .gpt-paragraph {
+    font-size: .8rem;
+    /* margin: 10px 0; */
+    /* color: #fff; */
+  }

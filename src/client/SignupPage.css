@@ -43,3 +43,24 @@
   border-radius: 10px;
   /* height: 60%; */
 }
+
+.signup-modal input[type="submit"] {
+    background-color: #C490D1;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  margin: 10px 0px;
+  border: 2px solid #5b86e5;
+  transition: all .3s linear;
+  width: 100%;
+  }
+
+.signup-modal input[type="submit"]:hover {
+    background-color:  #8c6795;
+
+    }
+    

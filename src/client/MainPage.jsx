@@ -11,6 +11,12 @@ import CategoryIcon from "./images/CategoryIcon.png";
 import NotepadIcon from "./images/NotepadIcon.png";
 import WateringCanIcon from "./images/WateringCanIcon.png";
 import Gpt3Example from "./components/Gpt3Example";
+//Color Pallate
+//#B8336A raspberry rose
+//#C490D1 wisteria
+//#ACACDE periwinkle
+//#ABDAFC uranian blue
+//#E5FCFF azure
 
 const MainPage = ({ user }) => {
   const [showButton, setShowButton] = useState(false);

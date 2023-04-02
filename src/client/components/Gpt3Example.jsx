@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { useQuery } from "@wasp/queries";
 import generatePlantGpt3 from '@wasp/actions/generatePlantGpt3';
 import generateImageDalle from '@wasp/actions/generateImageDalle';
 import './Gpt3Example.css';
 import createPlant from "@wasp/actions/createPlant";
-
+import createCategory from "@wasp/actions/createCategory";
+import createWateringTask from '@wasp/actions/createWateringTask';
+import getCategories from '@wasp/queries/getCategories';
 //Example of text output from GPT-3
 // "Species: Malus domestica Common Name: Apple Light Requirements: Full sun Water Requirements: Moderate Watering Schedule: Water when soil is dry to the touch Soil Requirements: Prefers well-draining, loamy soil Fertilizer Requirements: Feed in spring with a balanced fertilizer Propagation: Grafting or from seeds Pests and Diseases: Apple scab, codling moth, fire blight Toxicity: Non-toxic Other: Pruning is necessary to encourage fruiting Notes: Apples require cross-pollination to set fruit Fun Interesting Fact: Apples are the most widely cultivated tree fruit in the world. Free Image: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Apple_and_cross_section.jpg/1200px-Apple_and_cross_section.jpg"
 
 const Gpt3Example = ({ user }) => {
+  const { data: categories, isFetching, error } = useQuery(getCategories);
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState();
   const [isSaving, setIsSaving] = useState(false);
@@ -23,6 +27,7 @@ const Gpt3Example = ({ user }) => {
       console.log("GENERATED TEXT: ", generatedText)
       const dict = textToDictionary(generatedText)
       console.log("DICT: ", dict)
+     
       setOutputText(dict);
       setIsSaving(false);
     } catch (error) {
@@ -32,11 +37,37 @@ const Gpt3Example = ({ user }) => {
  const handleSavePlantClick = async () => {
   console.log("OUTPUT TEXT: ", outputText)
   console.log("HERE I AM !!!!!")
+  const currentCategories = categories.map((category) => category.name)
 
+  function sanitize(input) {
+    return input.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g, "")
+  }
 
-  await createPlant({ 
+  function sanitizeAndPluralize(input) {
+    const sanitized = sanitize(input);
+    return toPlural(sanitized);
+  }
+  
+
+  function toPlural(word) {
+    if (word.endsWith("y")) {
+      return word.slice(0, -1) + "ies";
+    } else if (word.endsWith("s")) {
+      return word;
+    } else {
+      return word + "s";
+    }
+  }
+
+  
+  if(!currentCategories.includes(outputText["Category"])){
+    // debugger
+    await createCategory({ name: sanitizeAndPluralize(outputText["Category"]) })
+  }
+
+  const plant = await createPlant({ 
     species: outputText["Species"],
-    commonName: outputText["Common Name"],
+    commonName: sanitize(outputText["Common Name"]),
     lightRequirements: outputText["Light Requirements"],
     waterRequirements: outputText["Water Requirements"],
     wateringSchedule: outputText["Watering Schedule"],
@@ -51,6 +82,21 @@ const Gpt3Example = ({ user }) => {
     imageUrl: generatedImage
   });
 
+console.log("PLANT: ", plant)
+  const date = getNextDate(outputText["Watering Schedule"])
+  const isoDate = date.toISOString().slice(0, 10) + 'T00:00:00.000Z';
+
+  console.log("DATE: ", date)
+//date: Wed Apr 05 2023 20:33:04 GMT-0700 (Pacific Daylight Time)
+
+//what needs to be: 2023-03-31T00:00:00.000Z
+  await createWateringTask({
+    plantId: plant.id,
+    dueDate: isoDate,
+    userId: user.id,
+    // isCompleted: false,
+  });
+
   setOutputText(null);
   setGeneratedImage(null);
  };
@@ -63,12 +109,13 @@ const Gpt3Example = ({ user }) => {
 
 
   return (
-    <div className='plants-container flex-column'>
-      <h1>Plant Generator</h1>
-      <p>Enter a plant name to generate a plant card, that displays information.</p>
-      <p>Examples: Apple, Potato, Basil, Plum Tree, Roses</p>
+    <div className='gpt-container flex-column'>
+      <h1 className='gpt-header'>Plant Generator</h1>
+      <p>Enter a plant name to generate a plant card!</p>
+      {/* <p>Save your plant to your garden and it will automatically set up a watering schedule for you.</p> */}
+      <p className='gpt-paragraph'>Examples: Apple, Potato, Basil, Roses</p>
       <textarea
-        className='new-plant-form'
+        className='gpt-form'
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
         placeholder="search for..."
@@ -127,7 +174,7 @@ function textToDictionary(text) {
     "Other",
     "Notes",
     "Fun Interesting Fact",
-    // "Free Image", 
+    "Category", 
   ];
 
   const dictionary = {};
@@ -149,9 +196,45 @@ function textToDictionary(text) {
     }
   }
   // debugger
-  const funInterestingFact = text.split("Fun Interesting Fact: ")[1];
+  const category = text.split("Category: ")[1];
 
-  dictionary["Fun Interesting Fact"] = funInterestingFact;
+  dictionary["Category"] = category;
 
   return dictionary;
+}
+
+function getNextDate(frequency) {
+  let currentDate = new Date();
+  switch(frequency) {
+    case 'daily':
+    case 'daily.':
+  case 'Daily':
+  case 'Daily.':
+      // debugger
+
+      currentDate.setDate(currentDate.getDate() + 1);
+      break;
+    case 'weekly':
+    case 'Weekly':
+    case 'Weekly.':
+    case 'weekly.':
+      currentDate.setDate(currentDate.getDate() + 7);
+      break;
+    case 'bi-weekly':
+    case 'Bi-weekly':
+    case 'Bi-weekly.':
+    case 'bi-weekly.':
+      currentDate.setDate(currentDate.getDate() + 14);
+      break;
+    case 'monthly':
+    case 'Monthly':
+    case 'Monthly.':
+    case 'monthly.':
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      break;
+    default:
+      break;
+  }
+  console.log("CURRENT DATE: ", currentDate)
+  return new Date(currentDate);
 }

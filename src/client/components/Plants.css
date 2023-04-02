@@ -1,20 +1,25 @@
 .plants-container {
-  background-color: #eaf0f1;
+    background-color: #E5FCFF;
   color: #2c3e50;
   font-family: "Arial", sans-serif;
   padding: 20px;
+  border: 2px solid #5b86e5;
+
+  /* border-radius: 10px; */
 }
 
 .plant-card {
-  background-color: #ffffff;
+    background-color: #E5FCFF;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  margin-top: 20px;
   padding: 20px;
 }
 
 .plant-card img {
-  max-width: 100%;
+  max-width: 50%;
+  margin-left: 25%;
+  /* margin: 0 auto; */
   height: auto;
   /* margin: 0 auto; */
 }
@@ -25,7 +30,11 @@
   grid-gap: 20px;
 }
 
-.new-plant-form {
+.plant-header {
+    margin-top: -30px;
+}
+
+/* .new-plant-form {
   display: grid;
   grid-gap: 10px;
   max-width: 500px;
@@ -56,4 +65,96 @@
 
 .submit-btn:focus {
   outline: none;
-}
+} */
+
+.new-plant-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #E5FCFF;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .form-section {
+    margin-top: 10px;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .new-plant-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2f2f2f;
+  }
+  
+  .new-plant-form input,
+  .new-plant-form select {
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #2f2f2f;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .new-plant-form input:focus,
+  .new-plant-form select:focus {
+    outline: none;
+    border-bottom: 2px solid #6cbf84;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  /* .form-category {
+    margin: 0;
+    padding: 0;
+  } */
+
+  .required-note {
+    font-size: 10px;
+    color: #2f2f2f;
+    margin-top: 15px;
+  }
+
+  .margin-top {
+    margin-top: -45px;
+    width: 50%;
+    margin-left: 62.5%;
+    margin-bottom: -20px;
+    /* background-color: #0077c2; */
+  }
+
+  .new-plant-form h3 span {
+    border: none;
+    border-radius: 5px;
+    color: #ACACDE;
+    cursor: pointer;
+    font-size: 20px;
+    /* padding: 10px 20px; */
+    text-transform: uppercase;
+    margin: 0px 0px;
+    /* margin-bottom: 10px; */
+    font-weight: bold;
+  }
+
+    .new-plant-form h3 span:hover {
+        color: #79799e;
+    }
