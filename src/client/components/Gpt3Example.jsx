@@ -60,7 +60,7 @@ const Gpt3Example = ({ user }) => {
   }
 
   
-  if(!currentCategories.includes(outputText["Category"])){
+  if(!currentCategories.includes(sanitizeAndPluralize(outputText["Category"]))){
     // debugger
     await createCategory({ name: sanitizeAndPluralize(outputText["Category"]) })
   }

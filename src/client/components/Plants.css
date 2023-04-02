@@ -142,6 +142,16 @@
     /* background-color: #0077c2; */
   }
 
+  @media only screen and (max-width: 767px) {
+    .margin-top {
+        margin-top: -40px;
+        width: 50%;
+        margin-left: 55%;
+        margin-bottom: -20px;
+        /* background-color: #0077c2; */
+      }
+  }
+
   .new-plant-form h3 span {
     border: none;
     border-radius: 5px;

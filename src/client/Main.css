@@ -126,7 +126,7 @@ section {
   display: flex;
   justify-content: space-around;
   gap: 5px;
-  /* background-color: #ABDAFC; */
+  /* background-color: #abfcc9; */
 }
 
 .section-link-column {
@@ -357,7 +357,7 @@ section {
   border-radius: 5px;
   color: #ACACDE;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1rem;
   /* padding: 10px 20px; */
   text-transform: uppercase;
   margin: 0px 0px;
@@ -442,3 +442,95 @@ section {
   /* overflow: hidden; */
   /* text-overflow: ellipsis; */
 }
+
+
+
+/* Your existing CSS code */
+
+/* Add the mobile-specific media query here */
+@media only screen and (max-width: 767px) {
+  main {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .section-row {
+    /* flex-direction: column; */
+    /* width: 80%; */
+  }
+
+  .section-icon {
+    width: 10%;
+  }
+
+  .section-link-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    /* background-color: #abfcc9; */
+    flex-wrap: wrap;
+  }
+  
+  .section-link-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* padding: 10px; */
+    gap: 10px;
+    border-radius: 10px;
+    border: 2px solid #5b86e5;
+    color: white;
+    /* Add the following */
+    flex: 1;
+    /* min-width: 25px; */
+    /* max-width: 100%; */
+    text-align: center;
+  }
+  
+  .section-link-icon {
+    /* Change width to max-width and height to max-height */
+    max-width: 145px;
+    max-height: 145px;
+    object-fit: contain;
+  }
+  
+
+ 
+
+  .section-link-title {
+    font-size: 1.2rem;
+    /* width: 60px; */
+  }
+
+  .plantify {
+    font-size: 2rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+
+  .delete-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .update-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .complete-btn
+  {
+    width: 100%;
+    font-size: 16px;
+  }
+  
+}
+
+
