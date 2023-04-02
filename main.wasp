@@ -52,24 +52,6 @@ entity User {=psl
     wateringTasks WateringTask[]
 psl=}
 
-
-//   const headers = [
-//     "Species",
-//     "Common Name",
-//     "Light Requirements",
-//     "Water Requirements",
-//     "Watering Schedule",
-//     "Soil Requirements",
-//     "Fertilizer Requirements",
-//     "Propagation",
-//     "Pests and Diseases",
-//     "Toxicity",
-//     "Other",
-//     "Notes",
-//     "Fun Interesting Fact",
-//     "Free Image", 
-//   ];
-
 entity Plant {=psl
   id               Int      @id @default(autoincrement())
   species         String?
@@ -85,10 +67,8 @@ entity Plant {=psl
   other String?
   note String?
   funInterestingFact String?
-  // name             String
   categoryId       Int?
   imageUrl         String?
-  // wateringFrequency String
   userId           Int
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

@@ -3,15 +3,11 @@ import "./LoginPage.css";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import LoginForm from "@wasp/auth/forms/Login";
-import PlantifyBackground from "./images/PlantifyBackground.png";
 const LoginPage = () => {
   return (
     <div className="login-container">
       <Nav />
-      <div
-        // style={{backgroundImage: `url(${PlantifyBackground})`, backgroundSize: 'cover', backgroundPosition: 'center center'}}
-        className="login-page"
-      >
+      <div className="login-page">
         <div className="login-modal">
           <h1 className="login-title">Login</h1>
           <LoginForm />

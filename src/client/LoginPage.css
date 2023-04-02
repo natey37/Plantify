@@ -3,7 +3,6 @@
 }
 
 .login-page {
-  /* background-color: #EAF0F1; */
   border-top: 4px solid #5b86e5;
   background-image: url(./images/PlantifyBackground.png);
   background-size: cover;
@@ -72,30 +71,7 @@
 
 .login-modal input[type="submit"]:hover {
     background-color:  #8c6795;
-    }
-    
-
-/* input[type="submit"] {
-  background-color: #3f51b5;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
-  font-size: 16px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 1rem;
-  width: 100%;
 }
-
-input[type="submit"]:hover {
-  background-color: #303f9f;
-}
-
-input[type="submit"]:disabled {
-  background-color: #e0e0e0;
-  color: #9e9e9e;
-  cursor: default;
-} */
 
 input[type="text"] {
   flex-grow: 1;

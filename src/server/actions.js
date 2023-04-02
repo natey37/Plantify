@@ -1,21 +1,22 @@
 //Plants
 
 export const createPlant = async (args, context) => {
-  const {  species,
-  commonName,
-  lightRequirements,
-  waterRequirements,
-  wateringSchedule,
-  soilRequirements,
-  fertilizerRequirements,
-  propagation,
-  pestsAndDiseases,
-  toxicity,
-  other,
-  note,
-  funInterestingFact,
-  imageUrl,
-  categoryId
+  const {
+    species,
+    commonName,
+    lightRequirements,
+    waterRequirements,
+    wateringSchedule,
+    soilRequirements,
+    fertilizerRequirements,
+    propagation,
+    pestsAndDiseases,
+    toxicity,
+    other,
+    note,
+    funInterestingFact,
+    imageUrl,
+    categoryId,
   } = args;
   console.log("ARGS", args);
 
@@ -26,19 +27,19 @@ export const createPlant = async (args, context) => {
   return context.entities.Plant.create({
     data: {
       species,
-        commonName,
-        lightRequirements,
-        waterRequirements,
-        wateringSchedule,
-        soilRequirements,
-        fertilizerRequirements,
-        propagation,
-        pestsAndDiseases,
-        toxicity,
-        other,
-        note,
-        funInterestingFact,
-        imageUrl,
+      commonName,
+      lightRequirements,
+      waterRequirements,
+      wateringSchedule,
+      soilRequirements,
+      fertilizerRequirements,
+      propagation,
+      pestsAndDiseases,
+      toxicity,
+      other,
+      note,
+      funInterestingFact,
+      imageUrl,
       categoryId: categoryId,
       userId: context.user.id,
     },
@@ -81,7 +82,7 @@ export const createWateringTask = async (args, context) => {
   console.log("ARGS", args);
   // const dateString = '2023-04-01';
   const dateObject = new Date(dueDate);
-    console.log("DATE", dateObject)
+  console.log("DATE", dateObject);
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -125,8 +126,38 @@ const updateEntity = (entityName, updateData) => {
 
 export const updatePlant = updateEntity(
   "Plant",
-  ({ species, commonName, lightRequirements, waterRequirements, wateringSchedule, soilRequirements, fertilizerRequirements, propagation, pestsAndDiseases, toxicity, other, note, funInterestingFact, imageUrl, categoryId  }) => ({
-    species, commonName, lightRequirements, waterRequirements, wateringSchedule, soilRequirements, fertilizerRequirements, propagation, pestsAndDiseases, toxicity, other, note, funInterestingFact, imageUrl, categoryId ,
+  ({
+    species,
+    commonName,
+    lightRequirements,
+    waterRequirements,
+    wateringSchedule,
+    soilRequirements,
+    fertilizerRequirements,
+    propagation,
+    pestsAndDiseases,
+    toxicity,
+    other,
+    note,
+    funInterestingFact,
+    imageUrl,
+    categoryId,
+  }) => ({
+    species,
+    commonName,
+    lightRequirements,
+    waterRequirements,
+    wateringSchedule,
+    soilRequirements,
+    fertilizerRequirements,
+    propagation,
+    pestsAndDiseases,
+    toxicity,
+    other,
+    note,
+    funInterestingFact,
+    imageUrl,
+    categoryId,
   })
 );
 
@@ -176,29 +207,20 @@ export const deleteCategory = deleteEntity("Category");
 export const deleteNote = deleteEntity("Note");
 export const deleteWateringTask = deleteEntity("WateringTask");
 
-
 //GPT-3 and DALLE
 const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
-
 export const generatePlantGpt3 = async ({ prompt }) => {
-    // console.log("API KEY", openaiApiKey)
-    // console.log("PROMPT", prompt)
-    // console.log(prompt.prompt)
+  const newPrompt = `Please fill out this template for ${prompt}. Please keep everything as succinct as possible. [Species]. [Common Name]. [Light Requirements]. [Water Requirements]. [Watering Schedule - give answer as Daily, Weekly, Bi-Weekly, Monthly]. [Soil Requirements]. [Fertilizer Requirements]. [Propagation]. [Pests and Diseases]. [Toxicity]. [Other]. [Notes]. [Fun Interesting Fact]. [Category].`;
 
-    const newPrompt = `Please fill out this template for ${prompt}. Please keep everything as succinct as possible. [Species]. [Common Name]. [Light Requirements]. [Water Requirements]. [Watering Schedule - give answer as Daily, Weekly, Bi-Weekly, Monthly]. [Soil Requirements]. [Fertilizer Requirements]. [Propagation]. [Pests and Diseases]. [Toxicity]. [Other]. [Notes]. [Fun Interesting Fact]. [Category].`
-
-    console.log("NEW PROMPT", newPrompt)
+  console.log("NEW PROMPT", newPrompt);
   try {
-    // const prompt = req.body.prompt;
-    // const tokens = req.body.tokens;
-
     const response = await fetch(
-      'https://api.openai.com/v1/engines/text-davinci-003/completions',
+      "https://api.openai.com/v1/engines/text-davinci-003/completions",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${openaiApiKey}`,
         },
         body: JSON.stringify({
@@ -211,19 +233,16 @@ export const generatePlantGpt3 = async ({ prompt }) => {
     );
 
     const data = await response.json();
-    console.log("Data IN GENERATE PLANT WTF", data)
+    console.log("Data IN GENERATE PLANT WTF", data);
 
     return data.choices[0].text;
-    // res.status(200).json({ text: data.choices[0].text });
   } catch (error) {
     console.error(error);
-    // res.status(500).json({ message: error.message });
   }
 };
 
 export const generateImageDalle = async ({ prompt, user }) => {
-    try {
-    //   const newPrompt = `3D rendered icon of ${prompt}.`;
+  try {
     const newPrompt = `PROMPT: Create an artistic, semi-realistic image of a ${prompt} The image should have a natural and organic feel to it, and should be suitable for use in a garden or nature-themed project. Please ensure that the image is high-resolution and visually appealing.
 
     PARAMETERS:
@@ -235,99 +254,79 @@ export const generateImageDalle = async ({ prompt, user }) => {
     - Background: Neutral or natural, with some texture
     - Color palette: Natural greens and earthy tones, with pops of color
     - Additional notes: Please avoid adding any artificial or overly stylized elements to the image, and strive for a balance between realism and artistic expression. The image should be suitable for use in print or digital media.
-    `
-        // console.log("PROMPT", newPrompt)
-      const response = await fetch(
-        'https://api.openai.com/v1/images/generations', // Hypothetical DALL-E API endpoint
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${openaiApiKey}`,
-          },
-          body: JSON.stringify({
-            
-                "prompt": newPrompt,
-                "size": "512x512",
-                "n": 1,
-                "response_format": "url"
-              
-              
-          }),
-        }
-      );
-  
-      const data = await response.json();
-    //   console.log("DATA", data);
-      const s3Url = saveImageToBucket(data.data[0].url, "plantify-images", `${user.username}/${prompt}.png`)
-      return s3Url // Assuming the API returns the image URL
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
+    `;
+    const response = await fetch(
+      "https://api.openai.com/v1/images/generations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openaiApiKey}`,
+        },
+        body: JSON.stringify({
+          prompt: newPrompt,
+          size: "512x512",
+          n: 1,
+          response_format: "url",
+        }),
+      }
+    );
 
-
-
-  import AWS from 'aws-sdk';
-  import fetch from 'node-fetch';
-  
-  // Configure AWS SDK
-  AWS.config.update({
-    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
-    region: process.env.REACT_APP_AWS_REGION,
-  });
-  
-  // Create an S3 instance
-  const s3 = new AWS.S3();
-  
-  async function saveImageToS3(url, bucketName, key) {
-    try {
-      // Fetch the image from the URL
-      const response = await fetch(url);
-      const buffer = await response.buffer();
-  
-      // Upload the image to S3
-      const uploadParams = {
-        Bucket: bucketName,
-        Key: key,
-        Body: buffer,
-        ContentType: response.headers.get('content-type'),
-        // ACL: 'public-read', // Set to 'public-read' to make the file publicly accessible
-      };
-  
-     
-      const uploadResult = await s3.upload(uploadParams).promise();
-      console.log('Image uploaded to S3:', uploadResult)
-      // Return the URL of the uploaded image in S3
-      return uploadResult.Location;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
+    const data = await response.json();
+    const s3Url = saveImageToBucket(
+      data.data[0].url,
+      "plantify-images",
+      `${user.username}/${prompt}.png`
+    );
+    return s3Url;
+  } catch (error) {
+    console.error(error);
   }
+};
 
-  const saveImageToBucket = async (url, bucketName, key) => {
-    try {
-            const savedImageUrl = await saveImageToS3(url, bucketName, key);
-            console.log('Image saved to S3:', savedImageUrl);
-            return savedImageUrl
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-  
-//   (async () => {
-//     const imageUrl = 'URL_OF_THE_IMAGE_FROM_DALLE'; // Replace with the actual URL
-//     const bucketName = 'your-s3-bucket-name'; // Replace with your S3 bucket name
-//     const key = 'path/to/save/image.jpg'; // Replace with the desired path and filename in your S3 bucket
-  
-//     try {
-//       const savedImageUrl = await saveImageToS3(imageUrl, bucketName, key);
-//       console.log('Image saved to S3:', savedImageUrl);
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   })();
-    
+import AWS from "aws-sdk";
+import fetch from "node-fetch";
+
+// Configure AWS SDK
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+  region: process.env.REACT_APP_AWS_REGION,
+});
+
+// Create an S3 instance
+const s3 = new AWS.S3();
+
+async function saveImageToS3(url, bucketName, key) {
+  try {
+    // Fetch the image from the URL
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+
+    // Upload the image to S3
+    const uploadParams = {
+      Bucket: bucketName,
+      Key: key,
+      Body: buffer,
+      ContentType: response.headers.get("content-type"),
+      // ACL: 'public-read', // Set to 'public-read' to make the file publicly accessible
+    };
+
+    const uploadResult = await s3.upload(uploadParams).promise();
+    // Return the URL of the uploaded image in S3
+    return uploadResult.Location;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+const saveImageToBucket = async (url, bucketName, key) => {
+  try {
+    const savedImageUrl = await saveImageToS3(url, bucketName, key);
+    console.log("Image saved to S3:", savedImageUrl);
+    return savedImageUrl;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};

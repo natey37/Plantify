@@ -146,13 +146,6 @@ const NewCategoryForm = ({
             </div>
             
         )}
-        {/* <div className="form-section"> */}
-           
-        {/* </div> */}
-      {/* <div className="form-actions">
-       
-      </div> */}
-      
     </form>
   );
 };

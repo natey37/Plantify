@@ -11,6 +11,7 @@ import CategoryIcon from "./images/CategoryIcon.png";
 import NotepadIcon from "./images/NotepadIcon.png";
 import WateringCanIcon from "./images/WateringCanIcon.png";
 import Gpt3Example from "./components/Gpt3Example";
+
 //Color Pallate
 //#B8336A raspberry rose
 //#C490D1 wisteria
@@ -40,6 +41,7 @@ const MainPage = ({ user }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  
   return (
     <div className="container">
       <Nav user={user} />
