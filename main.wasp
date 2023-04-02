@@ -2,7 +2,7 @@ app GardenMate {
   wasp: {
     version: "^0.9.0"
   },
-  title: "GardenMate",
+  title: "Plantify",
 
   auth: {
     // Expects entity User to have (username:String) and (password:String) fields.
@@ -13,7 +13,16 @@ app GardenMate {
     },
     // We'll see how this is used a bit later
     onAuthFailedRedirectTo: "/login"
-  }
+  }, 
+
+  dependencies: [
+    ("aws-sdk", "2.1345.0"),
+    ("node-fetch", "3.3.1"), 
+    ("@chakra-ui/react", "1.8.8"),
+    ("@emotion/react", "11.10.6"),
+    ("@emotion/styled", "11.10.6"),
+    ("framer-motion", "6.5.1")
+  ]
 }
 
 route RootRoute { path: "/", to: MainPage }
@@ -45,15 +54,26 @@ psl=}
 
 entity Plant {=psl
   id               Int      @id @default(autoincrement())
-  name             String
-  categoryId       Int
+  species         String?
+  commonName      String?
+  lightRequirements String?
+  waterRequirements String?
+  wateringSchedule String?
+  soilRequirements String?
+  fertilizerRequirements String?
+  propagation String?
+  pestsAndDiseases String?
+  toxicity String?
+  other String?
+  note String?
+  funInterestingFact String?
+  categoryId       Int?
   imageUrl         String?
-  wateringFrequency String
   userId           Int
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   user             User     @relation(fields: [userId], references: [id])
-  category         Category @relation(fields: [categoryId], references: [id])
+  category         Category? @relation(fields: [categoryId], references: [id])
   notes            Note[]
   wateringTasks    WateringTask[]
 psl=}
@@ -177,6 +197,8 @@ action deleteWateringTask {
 
 action generatePlantGpt3 {
   fn: import { generatePlantGpt3 } from "@server/actions.js",
-  // entities: [Plant]
 }
 
+action generateImageDalle {
+  fn: import { generateImageDalle } from "@server/actions.js",
+}

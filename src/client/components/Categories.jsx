@@ -14,7 +14,7 @@ const Categories = () => {
   const [categoryName, setCategoryName] = useState("");
 
   return (
-    <div className="categories">
+    <div className="plants-container">
       <NewCategoryForm
         isUpdating={isUpdating}
         setIsUpdating={setIsUpdating}
@@ -81,7 +81,7 @@ const CategoriesList = ({
   setUpdatingCategoryId,
   setCategoryName,
 }) => {
-  if (!categories?.length) return "No categories";
+  if (!categories?.length) return  <p>No categories</p>;
   return categories.map((category, idx) => (
     <Category
       category={category}
@@ -116,22 +116,36 @@ const NewCategoryForm = ({
       window.alert("Error: " + err.message);
     }
   };
+  const [openCreateCategory, setOpenCreateCategory] = useState(false);
 
   return (
-    <form className="new-category-form" onSubmit={handleSubmit}>
-      <label htmlFor="name">Category Name:</label>
-      <input
-        name="name"
-        type="text"
-        value={categoryName}
-        placeholder="Category name"
-        onChange={(e) => setCategoryName(e.target.value)}
-      />
-      <input
-        className="submit-btn"
-        type="submit"
-        value={isUpdating ? "Update category" : "Create category"}
-      />
+    <form className="new-plant-form" onSubmit={handleSubmit}>
+          <h3 className="close-btn" onClick={() => setOpenCreateCategory(prev => !prev)}>{openCreateCategory ? "x" : "Create a Category +"}</h3>
+        {openCreateCategory && (
+            <div className="form-section">
+                 <div className="form-row">
+             <div className="form-group">
+                 <label htmlFor="name">Category Name:</label>
+                 <input
+                     name="name"
+                     type="text"
+                     value={categoryName}
+                     placeholder="Ex. Fruits, Vegetables, Herbs, etc."
+                     onChange={(e) => setCategoryName(e.target.value)}
+                 />
+             </div>
+             <div className="form-group">
+                 <button
+                     style={{marginBottom: "-10px"}}
+                     className="submit-btn"
+                     type="submit"
+                 >{isUpdating ? "Update category" : "Create category"}</button>
+             </div>
+             
+         </div>
+            </div>
+            
+        )}
     </form>
   );
 };

@@ -20,6 +20,8 @@ const Notes = (props) => {
     error: plantsError,
   } = useQuery(getPlants);
 
+//   console.log("I AM PLANTS IN NOTES: ", plants)
+
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatingNoteId, setUpdatingNoteId] = useState(null);
   const [noteContent, setNoteContent] = useState("");
@@ -93,7 +95,7 @@ const Note = ({
 
   return (
     <div className="note">
-      <h2>{plant && plant.name}</h2>
+      <h2>{plant && plant.commonName}</h2>
       <p>{note.content}</p>
       <div className="button-row">
         <button className="delete-btn" onClick={handleDelete}>
@@ -115,7 +117,7 @@ const NotesList = ({
   setNoteContent,
   setSelectedPlantId,
 }) => {
-  if (!notes?.length) return "No notes";
+  if (!notes?.length) return  <p>No Notes</p>;
   return notes.map((note, idx) => (
     <Note
       note={note}
@@ -173,47 +175,68 @@ const NewNoteForm = (props) => {
       setSelectedPlantId(selectedPlantId);
     }
   }, [isUpdating, selectedPlantId, setSelectedPlantId]);
+  const [openCreateNote, setOpenCreateNote] = useState(false);
 
   return (
-    <form className="new-note-form" onSubmit={handleSubmit}>
-      <label htmlFor="content">Content:</label>
-      <input
-        name="content"
-        type="text"
-        defaultValue={noteContent}
-        placeholder="Note content"
-        onChange={(e) => setNoteContent(e.target.value)}
-      />
-      <label htmlFor="plantId">Plant:</label>
-      <select
-        name="plantId"
-        value={selectedPlantId || ""}
-        onChange={(e) => setSelectedPlantId(e.target.value)}
-      >
-        {plants.map((plant, idx) => (
-          <option key={idx} value={plant.id}>
-            {plant.name}
-          </option>
-        ))}
-      </select>
-      <input
-        className="submit-btn"
-        type="submit"
-        value={isUpdating ? "Update note" : "Create note"}
-      />
-      {isUpdating && (
-        <button
-          className="cancel-btn"
-          type="button"
-          onClick={() => {
-            setIsUpdating(false);
-            setNoteContent("");
-            setSelectedPlantId(null);
-          }}
-        >
-          Cancel update
-        </button>
-      )}
+    <form className="new-plant-form" onSubmit={handleSubmit}>
+        <h3 className="close-btn" onClick={() => setOpenCreateNote(prev => !prev)}>{openCreateNote ? "x" : "Create a Note +"}</h3>
+          {openCreateNote && (
+            <>
+                 <div className="form-section">
+            <div className="form-row">
+                <div className="form-group">
+                <label htmlFor="content">Content:</label>
+                    <input
+                        name="content"
+                        type="text"
+                        defaultValue={noteContent}
+                        placeholder="Note content"
+                        onChange={(e) => setNoteContent(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="plantId">Plant:</label>
+                    <select
+                        name="plantId"
+                        value={selectedPlantId || ""}
+                        onChange={(e) => setSelectedPlantId(e.target.value)}
+                    >
+                        {plants.map((plant, idx) => (
+                        <option key={idx} value={plant.id}>
+                            {plant.commonName}
+                        </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div className="form-actions">
+            <button
+            className="submit-btn"
+            type="submit"
+            >
+                {isUpdating ? "Update note" : "Create note"}
+            </button>
+            {isUpdating && (
+                <button
+                className="cancel-btn"
+                type="button"
+                onClick={() => {
+                    setIsUpdating(false);
+                    setNoteContent("");
+                    setSelectedPlantId(null);
+                }}
+                >
+                Cancel update
+                </button>
+            )}
+        </div>
+            </>
+          )}
+       
+     
+      
     </form>
   );
 };

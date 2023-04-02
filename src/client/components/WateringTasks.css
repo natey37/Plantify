@@ -1,12 +1,14 @@
 .watering-tasks {
-  background-color: #eaf0f1;
+  background-color: #ABDAFC;
   color: #2c3e50;
   font-family: "Arial", sans-serif;
   padding: 20px;
+  border: 2px solid #5b86e5;
+
 }
 
 .watering-task {
-  background-color: #ffffff;
+  background-color: #E5FCFF;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
@@ -17,47 +19,4 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 20px;
-}
-
-.new-watering-task-form {
-  display: grid;
-  grid-gap: 10px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.new-watering-task-form input,
-.new-watering-task-form select {
-  padding: 10px;
-  width: 100%;
-}
-
-.submit-btn {
-  background-color: #5b86e5;
-  border: none;
-  border-radius: 5px;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 10px 20px;
-  text-transform: uppercase;
-}
-
-.submit-btn:hover {
-  background-color: #4a75c4;
-}
-
-.submit-btn:focus {
-  outline: none;
-}
-
-.complete-btn {
-  background-color: #2ecc71;
-  border: none;
-  border-radius: 5px;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 9px;
-  padding: 10px 20px;
-  text-transform: uppercase;
 }

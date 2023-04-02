@@ -12,6 +12,13 @@ import NotepadIcon from "./images/NotepadIcon.png";
 import WateringCanIcon from "./images/WateringCanIcon.png";
 import Gpt3Example from "./components/Gpt3Example";
 
+//Color Pallate
+//#B8336A raspberry rose
+//#C490D1 wisteria
+//#ACACDE periwinkle
+//#ABDAFC uranian blue
+//#E5FCFF azure
+
 const MainPage = ({ user }) => {
   const [showButton, setShowButton] = useState(false);
 
@@ -34,11 +41,11 @@ const MainPage = ({ user }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  
   return (
     <div className="container">
       <Nav user={user} />
       <main>
-        <Gpt3Example />
         <h1 className="title">
           Welcome to <span className="plantify">Plantify</span>{" "}
           {`${user.username}`}
@@ -69,6 +76,7 @@ const MainPage = ({ user }) => {
             </div>
           </a>
         </div>
+        <Gpt3Example user={user}/>
         <section id="plants">
           <div className="section-row plant-background">
             <h2 className="section-title">Plants</h2>
