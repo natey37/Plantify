@@ -4,6 +4,11 @@ app GardenMate {
   },
   title: "Plantify",
 
+ db: {
+    system: PostgreSQL,
+  },
+
+
   auth: {
     // Expects entity User to have (username:String) and (password:String) fields.
     userEntity: User,
